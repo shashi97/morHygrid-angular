@@ -1,0 +1,37 @@
+<div style="padding: 10px 14px;position: relative;">
+  <hy-navbar [totalDB]="totalDB" [moduleName]="moduleName" [faIcon]="faIcon"></hy-navbar>
+  <hy-tableheader [tableHeader]="moduleName" [addFunctionName]="addFunctionName"  (addnewSource)="addnewSource($event)"></hy-tableheader>
+
+
+  <p-dataTable [value]="hfaDataBaseDetails" [globalFilter]="gb" scrollable="true" scrollHeight="300px" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [responsive]="true">
+    <p-column field="DatabaseName" header="Source Name" [filter]="true" [sortable]="true">
+      <ng-template let-hfaDtabase="rowData" pTemplate="body">
+        <div class="hfaDatabase"> {{hfaDtabase.DatabaseName}} </div>
+      </ng-template>
+    </p-column>
+    <p-column field="CategoryName" header="Category" [filter]="true" [sortable]="true"></p-column>
+    <p-column field="LoginID" header="Login ID" [filter]="true" [sortable]="true"></p-column>
+    <p-column field="Description" header="Description" [filter]="true" [sortable]="true">
+      <ng-template let-hfaDtabase="rowData" pTemplate="body">
+        <div class="hfaDatabase"> {{hfaDtabase.Description}} </div>
+      </ng-template>
+    </p-column>
+    <p-column field="ServerName" header="Server Name" [filter]="true" [sortable]="true">
+      <ng-template let-hfaDtabase="rowData" pTemplate="body">
+        <div class="hfaDatabase"> {{hfaDtabase.ServerName}} </div>
+      </ng-template>
+    </p-column>
+    <p-column field="SourceType" header="Source type" [filter]="true" [sortable]="true"></p-column>
+    <p-column styleClass="col-button" [style]="{'width':'50px','cursor':'pointer'}" header="E">
+      <ng-template let-hfadatabase="rowData" pTemplate="body">
+        <i class="fa fa-fw fa-edit" (click)="editHfaDataBase(hfadatabase.HFADatabaseID)"></i>
+      </ng-template>
+    </p-column>
+    <p-column styleClass="col-button" [style]="{'width':'50px' ,'cursor':'pointer'}" header="D">
+      <ng-template let-hfadatabase="rowData" pTemplate="body">
+        <i class="fa fa-fw fa-trash-o txt-color-red" (click)="delete(hfadatabase)"></i>
+      </ng-template>
+    </p-column>
+  </p-dataTable>
+</div>

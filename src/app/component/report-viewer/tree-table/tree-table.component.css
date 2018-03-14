@@ -1,0 +1,32 @@
+
+.ui-dialog-footer {
+  padding:0 !important;
+}
+.ui-widget-content {
+  height: 300px !important;
+}
+
+.tree-table-icon-selected {
+  color: seagreen !important;
+}
+
+.tree-table-icon {
+  color: #686868;
+}
+
+.tree-table-selected-report {
+  background-color: #ededed;
+}
+
+.tree-table-dynamic-width {
+  padding:0px 0px 10px 11px;background-color:#FFFFFF;
+max-height: calc(100vh - 160px);
+height: calc(100vh - 160px);border: 1.2px solid gray;overflow-y: auto;
+}
+
+
+.tree-table-dynamic-width-after-div-full-screen {
+  padding:0px 0px 10px 11px;background-color:#FFFFFF;
+max-height: calc(100vh - 98px);
+height: calc(100vh - 98px);border: 1.2px solid gray;overflow-y: auto;
+}

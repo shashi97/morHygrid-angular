@@ -1,0 +1,89 @@
+<p-growl [(value)]="message" life="3000"></p-growl>
+
+<div style="padding: 10px 14px;position: relative;">
+    <hy-navbar [totalDB]="totalDB" [moduleName]="moduleName" [faIcon]="faIcon"></hy-navbar>
+    <hy-tableheader [tableHeader]="moduleName" [addFunctionName]="addFunctionName" (addnewSource)="onNewUserAdd($event)"></hy-tableheader>
+
+    <p-dataTable [value]="users" [globalFilter]="gb" scrollable="true" scrollHeight="300px" [rows]="10" [paginator]="true" [pageLinks]="3"
+        [responsive]="true">
+        <p-column field="email" header=" Email" [filter]="true" [sortable]="true"></p-column>
+        <p-column field="userName" header="User Name" [filter]="true" [sortable]="true"></p-column>
+        <p-column styleClass="col-button" [style]="{'width':'50px'}" header="">
+            <ng-template let-user="rowData" pTemplate="body">
+                <i class="fa fa-fw fa-edit" (click)="onUserEdit(user.id)"></i>
+            </ng-template>
+        </p-column>
+        <p-column styleClass="col-button" [style]="{'width':'50px','cursor':'pointer'}" header="">
+            <ng-template let-user="rowData" pTemplate="body">
+                <i class="fa fa-fw fa-trash-o txt-color-red" (click)="delete(user)"></i>
+            </ng-template>
+        </p-column>
+    </p-dataTable>
+</div>
+<div id="ShowReportsDialog" title="Add Category " class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <div class="alert alert-warning" style="margin-right:20px">
+                    <i class="fa-fw fa fa-warning"></i>
+                    <strong>Warning</strong>
+                    <br>
+                    <br>
+                    <h4 class="modal-title" style="font-size: 13px;">Removing
+                        <b></b> will remove their access to the following items.</h4>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive padding">
+                            <div *ngFor='let company of Company'>
+                                <label>Client: {{company.companyName}}</label>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-lg-4">
+                                                <span>Report Name</span>
+                                            </th>
+                                            <th class="col-lg-4">
+                                                <span>Source Name</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr class="custom-table-border" *ngFor='let report of company.Reports'>
+                                            <td>
+                                                <span>{{report.reportName}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{report.databaseName}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger closeButton" data-dismiss="modal">
+                    <i class="fa fa-times"></i>
+                    Cancel
+                </button>
+                <button type="button" (click)="deleteUserById()" class="btn btn-primary">
+                    <i class="fa fa-check"></i>
+                    Ok
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

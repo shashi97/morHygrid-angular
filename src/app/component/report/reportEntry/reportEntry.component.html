@@ -1,0 +1,567 @@
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425">
+</p-confirmDialog>
+<div class="content">
+  <hy-navbar [totalDB]="totalDB" [moduleName]="moduleName" [faIcon]="faIcon"></hy-navbar>
+  <div class="well">
+    <div class="row" style="margin-top: 5px; margin-left: 0px">
+      <app-manage-component [header]="reportDetails.Header" *ngIf="reportDetails" [buttons]="buttons" [iconClass]="reportDetails.IconClass"
+        [type]="type" (saveChange)="onSaveChange()" (saveAndClose)="onSaveAndClose()" (cancelChange)="onCancel()"></app-manage-component>
+
+    </div>
+    <div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="col-lg-8 col-lg-offset-1" style="padding-top: 15px;">
+            <div class="form-group">
+              <label class="control-label">Data Source Name </label>
+              <div>
+                <select class="form-control" name="datasource" (change)="selectedDatabase(reportDetails.HFADatabaseID)" [(ngModel)]="reportDetails.HFADatabaseID"
+                  ui-select2>
+                  <option value="0">Select SourceName</option>
+                  <option *ngFor="let loc of DataBaseName" value="{{loc.HFADatabaseID}}">{{loc.DatabaseName}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label">Data Object Type </label>
+              <div>
+                <select class="form-control" name="datasource" [(ngModel)]="reportDetails.DataObjectTypeID" ui-select2>
+                  <option value="0">Select SourceType</option>
+                  <option *ngFor="let loc of SourceType" value="{{loc.DataObjectTypeID}}">{{loc.DataObjectTypeName}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label">Group Name </label>
+              <div>
+                <div ng2-auto-complete [source]="groupNameList" (ngModelChange)="onSelectReportDetail($event,format)" placeholder="enter text">
+                  <input class="form-control ng-pristine ng-valid" [(ngModel)]="reportDetails.ReportGroupName" placeholder="start typing..."
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Child Group Name</label>
+              <div>
+                <div ng2-auto-complete [source]="childGroupNameList" (ngModelChange)="onSelectChildReportGroup($event,format)" placeholder="enter text">
+                  <input class="form-control ng-pristine ng-valid" [(ngModel)]="reportDetails.ChildReportGroupName" placeholder="start typing..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label">Report Name </label>
+              <div>
+                <input type="text" [(ngModel)]="reportDetails.ReportName" name="login" class="form-control ng-pristine ng-valid">
+              </div>
+            </div>
+            <div class="form-group">
+              <!--<div>
+              <label style="float:left">Category  
+
+              </label>
+              <div style="padding-left:92%">-->
+              <hy-modalpopup [(categoryList)]="categoryList"></hy-modalpopup>
+              <!--
+              </div>
+            </div>-->
+              <div>
+                <select class="form-control" name="category" ui-select2 [(ngModel)]="reportDetails.CategoryID">
+                  <option value="0">Select Category</option>
+                  <option *ngFor="let category of categoryList" value="{{category.CategoryID}}">{{category.CategoryName}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" *ngIf="!HasPreDefinedDataObjects">
+
+              <label class="control-label">{{reportDetails.SourceNameLabel}}</label>
+              <label class="control-label" style="padding-left: 10px;">{{reportDetails.SourceNameExampleLabel}}</label>
+
+
+              <div>
+                <codemirror [(ngModel)]="reportDetails.SourceName" [style]="{'border': '1px solid #cccccc'}" [config]="config" *ngIf="reportDetails.DataObjectTypeID==3"></codemirror>
+                <input type="text" [(ngModel)]="reportDetails.SourceName" name="login" class="form-control ng-pristine ng-valid" *ngIf="reportDetails.DataObjectTypeID!=3">
+              </div>
+            </div>
+
+            <div class="form-group" *ngIf="HasPreDefinedDataObjects">
+              <label class="control-label">Data Object </label>
+              <div>
+                <select class="form-control" style="padding: 0px; margin: 0px;padding-left: 8px;" ui-select2 [(ngModel)]="reportDetails.SourceName"
+                  (change)="SelectedDataObjects(reportDetails.SourceName)" [disabled]="disableSourceType">
+                  <option value="0">Select SourceType</option>
+                  <option *ngFor="let obj of PreDefinedDataObjects" value="{{obj.ObjectName}}" [selected]="reportDetails.SourceName == obj.ObjectName">{{obj.DisplayName}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="padding:0px">
+              <div class="col-md-6" style="padding:0px">
+                <label class="control-label">Rest Formatted URL</label>
+                <div>
+                  <input type="checkbox" [(ngModel)]="reportDetails.IsFomattedUrl" />
+                </div>
+              </div>
+              <div class="col-md-6" style="padding:0px">
+                <label class="control-label">Report as Data Source</label>
+                <div>
+                  <input type="checkbox" [(ngModel)]="reportDetails.IsReportAsDataSource" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <div class="row">
+        <div>
+          <div class="col-lg-8 col-lg-offset-1">
+            <div>
+
+              <div class="row">
+                <div class="col-lg-8" style="padding-left: 0px">
+                  <b class="col-lg-6 ng-binding" style="padding-left: 0px">{{ReportParameterListLabel}}
+                  </b>
+                  <div class="col-lg-6">
+                    <div *ngIf="showTestDataLoading" style="padding-top: 0px" class="ng-hide">
+                      <img src="../../assets/img/TestDataLoading.GIF" height="20px"> Talking to server...
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 text-right" style="padding-right: 0px">
+                  <a (click)="AddNewReportParameter()" class="btn btn-primary btn-md" *ngIf="!HasFixedParameters">+ Add</a>
+                  <a (click)="GetReportDataFromService()" class="btn btn-primary btn-md">Test Data</a>
+                </div>
+              </div>
+
+
+
+
+              <div class="row">
+                <div class="table-responsive padding" style="padding-top: 5px;" *ngIf="!hideParameterList">
+                  <table id="Table1" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th style="width: 20%">
+                          <span>Parameter Name</span>
+                        </th>
+                        <th style="width: 18%">
+                          <span>Data Type</span>
+                        </th>
+                        <th style="width: 30%">
+                          <span>Default Value</span>
+                        </th>
+                        <th style="width: 20%">
+                          <span>Display Name</span>
+                        </th>
+                        <th style="width: 5%">
+                          <span>Hidden</span>
+                        </th>
+                        <th style="width: 5%"></th>
+                      </tr>
+                    </thead>
+
+                    <tbody *ngFor='let parameter of reportDetails.ReportParameters;let index = index'>
+                      <tr style="border-top: 1px solid #ECECEC; border-bottom: 1px solid #ECECEC">
+                        <td>
+                          <span>
+                            <input class="form-control" type="text" [(ngModel)]="parameter.ParameterName" *ngIf="!parameter.IsEditable" />
+                          </span>
+                        </td>
+                        <td>
+
+
+                          <select class="form-control col-md-12" style="padding: 0px; margin: 0px;padding-left: 8px;" ui-select2 [disabled]="parameter.IsEditable"
+                            (change)="parameter.DataType=$event.target.value;SetDataType(parameter)">
+                            <option *ngFor="let unit of DataTpeDetails" value="{{unit.DataTypeDisplayName}}" [selected]="parameter.DataType == unit.DataType && parameter.IsDynamicSource == unit.IsDynamicSource">
+                              {{unit.DataTypeDisplayName}}</option>
+                          </select>
+                        </td>
+
+                        <td>
+                          <span *ngIf="!parameter.IsShowDate">
+                            <span *ngIf="!parameter.IsDynamicSource">
+                              <span *ngIf="parameter.DataType == 'list'">
+                                <select class="form-control col-md-12" style="width:140px;float:left;" ui-select2 (change)="parameter.DefaultValue=$event.target.value"
+                                  [disabled]="parameter.IsEditable">
+                                  <option *ngFor="let staticValue of parameter.StaticListParams" value="{{staticValue.Value}}" [selected]="parameter.DefaultValue==staticValue.Value">
+                                    {{staticValue.Value}}
+                                  </option>
+                                </select>
+                                <a href="#" class="fa fa-plus-circle" style="font-size:30px;text-decoration:none;padding-left:6px;" data-action="createStaticList"
+                                  data-toggle="modal" data-target="#dialogCreateStaticList" (click)="showStaticList(parameter, index)">
+                                </a>
+                              </span>
+                              <span *ngIf="parameter.DataType != 'list'">
+                                <input class="form-control custom-text-align" type="text" [(ngModel)]="parameter.DefaultValue" [disabled]="parameter.IsEditable"
+                                />
+                              </span>
+                            </span>
+                            <span *ngIf="parameter.IsDynamicSource">
+                              <select class="form-control col-md-12" style="padding: 0px; margin: 0px;padding-left: 8px;" ui-select2 (change)="onChangeDefault($event,parameter)"
+                                [disabled]="parameter.IsEditable">
+                                <option value="0"></option>
+                                <option *ngFor="let reportData of parameter.DefaultValueParams" value="{{reportData.ID}}" [selected]="parameter.DefaultValue==reportData.ID">
+                                  {{reportData.Name}}
+                                </option>
+                              </select>
+                            </span>
+                          </span>
+                          <span *ngIf="parameter.IsShowDate" class="col-md-12" style="margin-bottom: -15px;padding:0px">
+                            <p class="input-group  col-md-10" style="float: left;">
+                              <!--<input class="form-control"
+                                                            datepicker-popup="{{dateFormat}}"
+                                                            [(ngModel)]="parameter.DefaultValue"
+                                                            datepicker-options="dateOptions"
+                                                            is-open="parameter.IsDPOpen"
+                                                            placeholder="MM/DD/YYYY" />-->
+                              <p-calendar type="text" appendTo="body" [(ngModel)]="parameter.DefaultValue" [showIcon]="true" [inputStyle]="{'width': '83%'}"></p-calendar>
+                              <!--<span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default"
+                                                            (click)="openDatePicker($event, parameter.Ids, parameter.DPId)">
+                                                            <i class="glyphicon glyphicon-calendar"></i>
+                                                        </button>
+                                                    </span>-->
+
+
+                            </p>
+
+                            <!--<form class="form-inline">
+  <div class="form-group">
+    <div class="input-group">-->
+
+
+                            <!--</div>
+  </div>
+</form>-->
+
+                            <div class="btn-group col-md-2" style="margin-left: -1px;    padding: 0px;">
+                              <button class="btn dropdown-toggle btn-md btn-default col-md-12" style="padding: 4px;margin-left: 13%;" data-toggle="dropdown"
+                                (click)="setReportRangeData(parameter.DPId)">
+                                <i class="fa fa-caret-down"></i>
+                              </button>
+                              <ul class="dropdown-menu js-status-update pull-right daterp" appendTo="body">
+                                <li *ngFor="let dateVariable of datePickerVariables">
+                                  <a (click)="showRangePicker(dateVariable.Value)">{{dateVariable.Text}}</a>
+                                </li>
+                              </ul>
+                            </div>
+                          </span>
+                        </td>
+
+                        <td>
+                          <span>
+                            <input class="form-control" type="text" [(ngModel)]="parameter.DisplayName" />
+                          </span>
+                        </td>
+
+                        <td>
+                          <span>
+                            <input style="margin-left: 20px" type="checkbox" [(ngModel)]="parameter.IsHidden" [disabled]="parameter.IsEditable" />
+                          </span>
+                        </td>
+
+                        <td>
+                          <a style="height: 20px; width: 20px; cursor: pointer" (click)="DeleteReportParameter(parameter.ReportParameterID, parameter.ParameterName,index)"
+                            *ngIf="!parameter.IsEditable">
+                            <i class="fa fa-fw fa-trash-o txt-color-red"></i>
+                          </a>
+                        </td>
+                      </tr>
+                      <tr *ngIf="parameter.IsDynamicSource">
+                        <td>
+                          <span style="font-weight: bold">Report Data Source</span>
+                        </td>
+                        <td>
+                          <select class="form-control col-md-12" style="padding: 0px; margin: 0px;padding-left: 8px;" ui-select2 [disabled]="parameter.IsEditable"
+                            (change)="parameter.DataSourceReportID = $event.target.value;GetReportParamDetail(parameter)">
+                            <option value="0"></option>
+                            <optgroup *ngFor="let reportGroup of ReportGroups" label="{{reportGroup}}">
+                              <option *ngFor="let report of filterReportDetails(reportGroup)" value="{{report.ReportID}}" [selected]="parameter.DataSourceReportID==report.ReportID">
+                                <span> {{report.ReportName}}</span>
+                              </option>
+                            </optgroup>
+                          </select>
+                        </td>
+                        <td style="padding: 8px 0px 0px 10px;">
+                          <span style="font-weight: bold;width: 45px;float: left;margin-top: 5px;">Value:</span>
+                          <select class="form-control col-md-12" style="padding: 0px; margin: 0px;padding-left: 8px;width:134px;" ui-select2 [disabled]="parameter.IsEditable"
+                            (change)="parameter.ColumnValue = $event.target.value;GetDefaultValueParams(parameter)">
+                            <option value=""></option>
+                            <option *ngFor="let column of parameter.ParamColumns" value="{{column}}" 
+                              [selected]="parameter.ColumnValue==column">{{column}}</option>
+                          </select>
+                        </td>
+                        <td colspan="2">
+                          <span style="font-weight: bold;width: 45px;float: left;margin-top: 5px;">Label:</span>
+                          <select class="form-control col-md-12" style="padding: 0px; margin: 0px;padding-left: 8px;width:134px;" ui-select2 [disabled]="parameter.IsEditable"
+                            (change)="parameter.ColumnLabel = $event.target.value;GetDefaultValueParams(parameter)">
+                            <option value=""></option>
+                            <option *ngFor="let column of parameter.ParamColumns" value="{{column}}" [selected]="parameter.ColumnLabel==column">{{column}}</option>
+                          </select>
+                        </td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <span style="font-weight: bold">Description</span>
+                        </td>
+                        <td colspan="4">
+                          <span>
+                            <input class="form-control" type="text" [(ngModel)]="parameter.Description" [disabled]="parameter.IsEditable" />
+                          </span>
+                        </td>
+                        <td></td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+
+
+
+
+
+                <div class="row" *ngIf="showTestDataFirstTime">
+                  <div class="col-lg-8">
+                    <b>Test Data Result</b>
+                  </div>
+                  <div class="col-lg-4 text-right">
+                    <a (click)="ShowOrHideTestResult()" class="">{{testDataResultSwitch}}</a>
+                  </div>
+
+
+                  <!--<div id="testReportData" *ngIf="showErrorMsg" class="customPadTop30">{{ErrorMsg}}</div>-->
+
+
+
+
+
+
+
+                  <div class="row customPadTop30">
+
+
+
+                    <div class="tab-pane" id="hr2">
+
+                      <ul class="nav nav-tabs">
+                        <li>
+                          <a href="#iss3" data-toggle="tab" style="padding-top: 0px">Call</a>
+                        </li>
+
+                        <li>
+                          <a href="#iss1" data-toggle="tab" style="padding-top: 0px">Grid View</a>
+                        </li>
+                        <li class="active">
+                          <a href="#iss2" data-toggle="tab" style="color: black; padding-top: 0px">Raw Response</a>
+                        </li>
+                      </ul>
+                      <div class="tab-content padding-10">
+
+
+                        <div class="tab-pane fade" id="iss3">
+                          {{query}}
+                        </div>
+                        <div class="tab-pane fade" id="iss1">
+                          <div class="panel-group smart-accordion-default" id="Div1">
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <div class="row">
+                                  <div class="col-lg-7 col-md-4 col-sm-4 col-xs-6 padLeft13">
+                                    <h1>
+                                      <i class="fa fw fa-table"></i>&nbsp;Test Result</h1>
+                                  </div>
+                                  <div class="col-lg-5 col-md-8 col-sm-8 col-xs-6">
+                                    <div class="row">
+                                      <div class="custom-padding-searchBox">
+                                        <div id="Div3" class="custom-dataTables_filter">
+                                          <label>
+                                            <span class="input-group-addon">
+                                              <i class="glyphicon glyphicon-search"></i>
+                                            </span>
+                                            <input type="text" class="form-control" #gb ng-change="refreshData()" placeholder="Search" ng-model="searchText" aria-controls="dt_basic">
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <p-dataTable [value]="gridData" [globalFilter]="gb" resizableColumns="true" columnResizeMode="expand">
+                            <p-column *ngFor="let col of gridList" [sortable]="true" [filter]="true" [field]="col.field" [header]="col.header" [style]="{'width': '155px'}"></p-column>
+                          </p-dataTable>
+                          <!--<div class="gridStyle" ui-grid="TestDataGridOptions" style="border-top: 1px solid #CFC9C9;max-height:500px;min-height:300px;"></div>-->
+                        </div>
+                        <div class="tab-pane active" id="iss2" style="max-height: 500px; overflow-y: scroll">
+                          <span *ngIf="showErrorMsg" style="color:red;">{{ErrorMsg}}</span>
+                          <pre *ngIf="showTestData">{{TestReportData | json}}</pre>
+                        </div>
+
+                      </div>
+
+                    </div>
+
+
+
+                    <!--<div class="gridStyle" id="testReportData" ></div>-->
+                  </div>
+
+                  <hr />
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="row">
+        <div>
+          <div class="col-lg-8 col-lg-offset-1">
+            <div>
+              <div class="row">
+                <div class="col-lg-8">
+                  <b>List of Display Columns</b>
+                </div>
+                <div class="text-right col-lg-4">
+
+                </div>
+
+              </div>
+
+              <div class="col-lg-12">
+                <div class="table-responsive padding" style="padding-top: 5px;">
+                  <table id="Table2" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th style="width: 25%">
+                          <span>Column Name</span>
+                        </th>
+                        <th style="width: 20%">
+                          <span>Data Type</span>
+                        </th>
+                        <th style="width: 27%">
+                          <span>Display Format</span>
+                        </th>
+                        <th style="width: 27%">
+                          <span>Display Name</span>
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody *ngFor='let column of reportDetails.ReportColumns'>
+                      <tr style="border-top: 1px solid #ECECEC; border-bottom: 1px solid #ECECEC">
+                        <td>
+                          <span>
+                            <input class="form-control" type="text" [(ngModel)]="column.ColumnName" [disabled]="true" />
+                          </span>
+                        </td>
+                        <td>
+                          <span>
+                            <input class="form-control" type="text" [(ngModel)]="column.DataType" [disabled]="true" />
+                          </span>
+                        </td>
+                        <td>
+                          <span>
+                            <input class="form-control" type="text" [(ngModel)]="column.DisplayFormat" />
+                          </span>
+                        </td>
+                        <td>
+                          <span>
+                            <input class="form-control" type="text" [(ngModel)]="column.DisplayName" />
+                          </span>
+                        </td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="col-lg-12" *ngIf="ErrorColMsg!=''" style="color:red;">
+                {{ErrorColMsg}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+
+  <div id="dialogCreateStaticList" title="Static List" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog custom-mobile-width">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+          </button>
+          <h4 class="modal-title">Static List</h4>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="col-md-3 control-label" style="padding:5px;text-align:right;">Default Value</label>
+              <div class="col-md-6">
+                <input class="form-control" type="text" [(ngModel)]="StaticList.DefaultValue" placeholder="Default Value" />
+              </div>
+              <label class="col-md-3 control-label"></label>
+            </div>
+          </div>
+          <div class="row" style="border-bottom:1px solid #dddddd;">
+            <label style="margin-top: 7px;">List Of Values</label>
+            <a class="fa fa-plus-circle pull-right" style="font-size:30px;text-decoration:none;cursor:pointer;" (click)="addStaticListParameter()"></a>
+          </div>
+          <div class="row" style="overflow-y:auto;max-height:300px;">
+            <div class='list-group'>
+              <div class="list-group" dnd-sortable-container [sortableData]="StaticList.StaticListParams">
+
+                <div class="list-group-item" style="border:none;" *ngFor="let item of StaticList.StaticListParams; let i = index " class="list-group-item"
+                  dnd-sortable [sortableIndex]="i">
+                  <div class='pull-left gm-drag-handle'>
+                    <span class='glyphicon glyphicon-move'></span>
+                  </div>
+                  <input class="form-control pull-left" type="text" style="width:280px;" [(ngModel)]="item.Value" placeholder="List Value"
+                  />
+                  <a class="fa fa-trash-o txt-color-red gm-drag-delete" style="text-decoration:none;" (click)="removeStaticListParameter(item)"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default closeButton" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+            Cancel
+          </button>
+          <button type="button" (click)="createStaticListParameter(StaticList.ParamIndex)" class="btn btn-success">
+            <i class="fa fa-save"></i>
+            Save
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>

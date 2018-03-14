@@ -1,0 +1,17 @@
+    <article class="col-sm-4 col-md-10 col-lg-12">
+        <div class="collapse navbar-collapse custom-bordered-bottom ">
+          <ul class="nav navbar-nav navbar-left">
+            <li>
+              <div style="font-weight: bold; font-size: 15px; padding-top: 0px" class="ng-binding">
+                <i ng-class="IconClass" class="{{iconClass}}"></i>{{header}}</div>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+
+            <li  *ngFor="let button of defaultButton" class="{{button.class}}">
+              <a class="custom-color-white" (click)="onClickButton(button)">{{button.title}}</a>
+            </li>
+
+          </ul>
+        </div>
+      </article>

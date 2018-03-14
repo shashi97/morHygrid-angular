@@ -1,0 +1,229 @@
+<p-growl [(value)]="message" life="3000"></p-growl>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="txt-color-blueDark">
+            <i class="fa fa-user fa-fw"></i>Manage Users</h1>
+    </div>
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+        <ul id="sparks">
+            <li class="sparks-info">
+                <h5>Total Users
+                    <span class="txt-color-blue">&nbsp;{{totalDB}}</span>
+                </h5>
+            </li>
+            <li class="sparks-info">
+                <h5>&nbsp;
+                    <span class="txt-color-blue">&nbsp;</span>
+                </h5>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="well">
+
+    <div class="row" style="margin-top: 5px; margin-left: 0px">
+        <article class="col-sm-4 col-md-10 col-lg-12">
+            <div class="collapse navbar-collapse custom-bordered-bottom ">
+                <ul class="nav navbar-nav navbar-left">
+                    <li>
+                        <div style="font-weight: bold; font-size: 15px; padding-top: 0px">
+                            <i class="fa fa-fw fa-edit txt-color-blue IconClass" *ngIf="userModel.id !== '0'"></i>
+                            <i class="fa fa-fw fa-plus txt-color-blue IconClass" *ngIf="userModel.id == '0'"></i>&nbsp;{{header}}
+                        </div>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="active bg-color-red custom-color-white">
+                        <a (click)="onCancel()" class="custom-color-white">Cancel</a>
+                    </li>
+                    <li class="bg-color-blue custom-color-white">
+                        <a (click)="saveUser()" class="custom-color-white">Save</a>
+                    </li>
+                </ul>
+            </div>
+        </article>
+    </div>
+    <div>
+        <br />
+    </div>
+
+    <div class="row">
+
+
+        <div class="col-lg-12">
+
+            <div class="col-lg-8 col-lg-offset-1">
+
+                <div class="form-group">
+                    <label class="control-label">User Name</label>
+                    <div>
+                        <input type="text" class="form-control" [(ngModel)]="userModel.userName"  [disabled]="userDisable" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Email </label>
+                    <div>
+                        <input type="text" class="form-control" [(ngModel)]="userModel.email" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Password</label>
+                    <div>
+                        <input type="password" class="form-control" [(ngModel)]="userModel.password" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Confirm Password</label>
+                    <div>
+                        <input type="password" class="form-control" [(ngModel)]="confirmPassword" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Role </label>
+                    <div>
+                        <select class="form-control" name="datasource" [(ngModel)]="userModel.roleID" [disabled]="isDisable" ui-select2>
+                            <option value="0">Select Role</option>
+                            <option *ngFor="let role of Roles" value="{{role.roleID}}">{{role.description}}</option>
+                        </select>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <label class="control-label">Image</label>
+                    <div>
+                        <img class="avatar img-circle" src="{{userModel.imageSource}}" *ngIf="userModel.isNewImage" alt="" width="140px" height="140px"
+                        />
+                        <img class="avatar img-circle" src="{{userModel.imagePath}}" *ngIf="!userModel.isNewImage" alt="" width="140px" height="140px"
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input id="upload" type="file" (change)="imageChange($event)" />
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="row">
+
+    </div>
+
+    <div class="row" *ngIf="userModel.roleID == 1">
+        <div class="col-lg-12">
+            <div class="col-lg-8 col-lg-offset-1">
+                <div class="table-responsive padding">
+                    <label>User Companies</label>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">
+                                    <span></span>
+                                </th>
+                                <th style="width: 50%" class="col-lg-6">
+                                    <span>Company Name</span>
+                                </th>
+                                <th style="width: 50%" class="col-lg-6">
+                                    <span>Description</span>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr class="custom-table-border" *ngFor='let item of userModel.userCompanyModel'>
+                                <td style="width: 40px;">
+                                    <div>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" [(ngModel)]="item.isChecked" class="custom-checkbox" (click)="getReports(item)">
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span>{{item.companyName}}</span>
+                                </td>
+                                <td>
+                                    <span>{{item.description}}</span>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<p-dialog [(visible)]="display" modal="modal" [minWidth]="700" [responsive]="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="alert alert-warning" style="margin-right:20px">
+                    <i class="fa-fw fa fa-warning"></i>
+                    <strong>Warning</strong>
+                    <br>
+                    <br>
+                    <h4 class="modal-title" style="font-size: 13px;">
+                        <b>{{userModel.userName}}</b> has reports associated with
+                        <b>{{CompanyName}}</b>. Removing
+                        <b>{{userModel.userName}}</b> from
+                        <b>{{CompanyName}}</b> will remove their access to the following items.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive padding">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="col-lg-4">
+                        <span>Report Name</span>
+                    </th>
+                    <th class="col-lg-4">
+                        <span>Source Name</span>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="custom-table-border" *ngFor='let report of Reports'>
+                    <td>
+                        <span>{{report.reportName}}</span>
+                    </td>
+                    <td>
+                        <span>{{report.databaseName}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- <p-footer> -->
+
+    <button type="button" class="btn btn-danger closeButton" (click)="onCancelFromFooter()">
+        <i class="fa fa-times"></i>
+        Cancel
+    </button>
+    <button type="button" (click)="deleteUserDetails()" class="btn btn-primary">
+        <i class="fa fa-check"></i>
+        Ok
+    </button>
+
+    <!-- </p-footer> -->
+</p-dialog>

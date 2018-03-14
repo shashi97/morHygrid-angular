@@ -1,0 +1,267 @@
+<div *ngIf="isChart" class="custom-scroll">
+    <div id="graphs-flot-charts--bar-chart">
+
+
+        <div style="    border-style: initial;">
+            <div class="widget-body ">
+
+                <div>
+
+                    <div class="jarviswidget jarviswidget-sortable" style="margin:0px">
+                        <header class="border-color height-40 border-radious-6">
+
+                            <h2 style="color:#CCCCCC;line-height: 34px;">Add Chart</h2>
+                            <a class="widget-icon custom-width line-height active-chart" (click)="addChart('Pie')" pTooltip="Pie Chart">
+        <img  alt="SmartAdmin" src="assets/img/pie-chart.png" style="width: 27px;"></a>
+                            <a class="widget-icon custom-width line-height active-chart" (click)="addChart('Bar')" pTooltip="Bar Chart">
+        <img  alt="SmartAdmin" src="assets/img/bars-chart.png" style="width: 27px;"></a>
+                            <a class="widget-icon custom-width line-height deactive-table">
+        <img  alt="SmartAdmin" src="assets/img/line-graph.png" style="width: 25px;" (click)="addChart('Line')"  pTooltip="Line Chart"></a>
+
+
+                        </header>
+
+
+
+                        <div class="graph-body " [ngClass]="{'set-height-with-full-screen':isFullScreen,'height':!isFullScreen}">
+                            <div class="widget-body" style="padding-bottom: 0px;">
+                                <div class="container-fluid bg-3 text-center" style="max-height: calc(100vh - 220px)">
+                                    <div class="row set-height" [ngClass]="{'set-height':!isFullScreen,'set-height-with-full-screen-chart':isFullScreen}">
+                                        <!--<ul>
+  <li *ngFor="let item of reportViewerChartDetails" >
+    {{item.chartType }}
+  </li>
+</ul>-->
+                                        <div class="col-sm-12 padding-0 set-color margin-bottom-14" *ngFor="let chart of reportViewerChartDetails ; let index = index">
+
+                                            <div class="col-md-12 margin-bottom-14">
+                                                <div class="float-right">
+                                                    <a class="widget-icon custom-width line-height selectected-setting-button" (click)="onSelectSetting(chart,$event);chart.display=true"
+                                                        [ngClass]="{'setting-button-click':chart.isSelectedSetting,'selectected-setting-button':!chart.isSelectedSetting}">
+                                       <img  alt="SmartAdmin" 
+                                             src="assets/img/settings-work-tool.png" 
+                                             style="width: 25px;">
+                                  </a>
+                                                    <a class="widget-icon custom-width line-height set-close-button-color" (click)="deleteChart(index)">
+                                        <img  alt="SmartAdmin" 
+                                              src="assets/img/close-chart.png" 
+                                              style="width: 17px;">
+                                  </a>
+
+                                                </div>
+
+                                                <p-dialog header="{{chart.chartType}} chart" width="700" [(visible)]="chart.display" (visibleChange)="chart.isSelectedSetting = false;">
+                                                    <div class="row row-border">
+                                                        <div class="form-group">
+
+                                                            <div class="col-md-12 smart-form ng-untouched ng-pristine ng-valid">
+                                                                <fieldset class="padding-t-0">
+                                                                    <section>
+                                                                        <!--<p-panel header="Column" [toggleable]="true" [styleClass]="row">-->
+
+                                                                        <div class="ui-g">
+                                                                            <div class="ui-g-2 label-padding" *ngIf="chart.chartType == 'Pie' ">Column Name </div>
+
+                                                                            <div class="ui-g-2 label-padding" *ngIf="chart.chartType == 'Line'  ">X-Axis</div>
+                                                                            <div class="ui-g-2 label-padding" *ngIf="chart.chartType == 'Bar' ">X-Axis</div>
+
+                                                                            <div class="ui-g-4" *ngIf="chart.chartType == 'Pie'  ">
+                                                                                <p-dropdown [options]="columnNames" appendTo="body" [(ngModel)]="chart.selectedName" [style]="{'width':'197px','float':'left'}"
+                                                                                    [filter]="true" placeholder="Select Column Name"></p-dropdown>
+                                                                            </div>
+                                                                            <div class="ui-g-4" *ngIf="chart.chartType == 'Line'  ">
+
+                                                                                <p-multiSelect [options]="columnNames" appendTo="body" [(ngModel)]="chart.selectedBarName" [style]="{'width':'197px','float':'left'}"
+                                                                                    [filter]="true" placeholder="Select Column Name"></p-multiSelect>
+                                                                            </div>
+                                                                            <div class="ui-g-4" *ngIf="chart.chartType == 'Bar'  ">
+
+                                                                                <p-multiSelect [options]="columnValue" appendTo="body" [(ngModel)]="chart.selectedBarValue" [style]="{'width':'197px','float':'left'}"
+                                                                                    [filter]="true" placeholder="Select Column Value"></p-multiSelect>
+                                                                            </div>
+
+
+                                                                        </div>
+
+                                                                        <div class="ui-g">
+
+                                                                            <div class="ui-g-2 label-padding" *ngIf="chart.chartType == 'Pie' ">Column Value </div>
+
+                                                                            <div class="ui-g-2 label-padding" *ngIf="chart.chartType == 'Line' ">Y-Axis</div>
+                                                                            <div class="ui-g-2 label-padding" *ngIf="chart.chartType == 'Bar' ">Y-Axis</div>
+                                                                            <div class="ui-g-4" *ngIf="chart.chartType == 'Pie'">
+                                                                                <p-dropdown [options]="columnValue" appendTo="body" [(ngModel)]="chart.selectedValue" [style]="{'width':'197px','float':'left'}"
+                                                                                    [filter]="true" placeholder="Select Column Value"></p-dropdown>
+                                                                            </div>
+                                                                            <div class="ui-g-4" *ngIf="chart.chartType == 'Line'  ">
+                                                                                <p-multiSelect [options]="columnValue" appendTo="body" [(ngModel)]="chart.selectedBarValue" [style]="{'width':'197px','float':'left'}"
+                                                                                    [filter]="true" placeholder="Select Column Value"></p-multiSelect>
+                                                                                <!--<p-dropdown [options]="chart.columnValue" appendTo="body" [(ngModel)]="chart.selectedValue" [style]="{'width':'197px','float':'left'}"
+                                                                                    [filter]="true" placeholder="Select Column Value"></p-dropdown>-->
+                                                                            </div>
+                                                                            <div class="ui-g-4" *ngIf="chart.chartType == 'Bar'  ">
+                                                                                <p-dropdown [options]="columnNames" appendTo="body" [(ngModel)]="chart.selectedName" [style]="{'width':'197px','float':'left'}"
+                                                                                    [filter]="true" placeholder="Select Column Name"></p-dropdown>
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                        <!--<div class="ui-g">
+                                                                            <div class="ui-g-2 label-padding">{{chart.chartType}} chart Type</div>
+                                                                            <div class="ui-g-4">
+                                                                                <p-dropdown [options]="chart.chartOptions" appendTo="body" [(ngModel)]="chart.selectedChartType" [style]="{'width':'197px','float':'left'}"
+                                                                                    [filter]="true" placeholder="Select Column Name"></p-dropdown>
+                                                                            </div>
+
+                                                                        </div>-->
+                                                                        <!--</p-panel>-->
+                                                                    </section>
+                                                                </fieldset>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <p-footer>
+
+                                                        <button class="btn btn-primary" (click)="chart.display = false;onSubmitChartSetting(chart)" type="submit">Submit</button>
+                                                        <button class="btn btn-default" (click)="chart.display = false;chart.isSelectedSetting = false" type="button">Cancel</button>
+                                                    </p-footer>
+                                                </p-dialog>
+
+
+                                            </div>
+                                            <div class="col-md-12">
+
+                                                <!--start pie chart-->
+                                                <ngx-charts-pie-chart *ngIf="chart.chartType === 'Pie' " [view]="view" [scheme]="colorScheme" [results]="chart.single" [legendTitle]="''"
+                                                    [legend]="showLegend" [explodeSlices]="explodeSlices" [labels]="showLabels"
+                                                    [doughnut]="doughnut" [gradient]="gradient">
+                                                </ngx-charts-pie-chart>
+                                                <!--                                               
+                                                <ngx-charts-pie-grid *ngIf="chart.chartType === 'Pie' && chart.selectedChartType === 'Pie Grid'" [view]="view" [scheme]="colorScheme"
+                                                    [results]="single" [animations]="animations" [tooltipDisabled]="tooltipDisabled">
+                                                </ngx-charts-pie-grid>-->
+                                                <!--end pie chart-->
+
+                                                <!--start line chart-->
+                                                <ngx-charts-line-chart *ngIf="chart.chartType === 'Line'" [view]="view" [scheme]="colorScheme" [results]="chart.multiple"
+                                                    [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                                    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                                                    [yAxisLabel]="yAxisLabel" [legendTitle]="''" [autoScale]="autoScale" (select)="onSelectLine($event)">
+                                                </ngx-charts-line-chart>
+                                                <!--<ngx-charts-polar-chart *ngIf="chart.chartType === 'Line' && chart.selectedChartType === 'Polar Chart'" [view]="view" [scheme]="colorScheme"
+                                                    [results]="multi" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                                    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                                                    [yAxisLabel]="yAxisLabel" [autoScale]="autoScale" (select)="onSelectLine($event)">
+                                                </ngx-charts-polar-chart>
+                                                <ngx-charts-bubble-chart *ngIf="chart.chartType === 'Line' && chart.selectedChartType === 'Area Chart'" [view]="view" [scheme]="colorScheme"
+                                                    [results]="multi" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                                    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                                                    [yAxisLabel]="yAxisLabel" [autoScale]="autoScale" (select)="onSelectLine($event)">
+                                                </ngx-charts-bubble-chart>
+                                                <ngx-charts-force-directed-graph *ngIf="chart.chartType === 'Line' && chart.selectedChartType === 'Stacked Area Chart'" [view]="view"
+                                                    [scheme]="colorScheme" [results]="multi" [legend]="showLegend" [legendTitle]="legendTitle"
+                                                    [animations]="animations" (legendLabelClick)="onLegendLabelClick($event)"
+                                                    [nodes]="graph.nodes" [scheme]="colorScheme" [view]="view" [tooltipDisabled]="tooltipDisabled"
+                                                    (select)="onSelectLine($event)">
+                                                </ngx-charts-force-directed-graph>
+                                                <ngx-charts-area-chart *ngIf="chart.chartType === 'Line' && chart.selectedChartType === 'Normalized Area Chart'" [view]="view"
+                                                    [scheme]="colorScheme" [results]="multi" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                                                    [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                                                    [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [autoScale]="autoScale"
+                                                    (select)="onSelectLine($event)">
+                                                </ngx-charts-area-chart>-->
+
+
+                                                <!--End linechart-->
+
+                                                <!--start bar chart-->
+                                                <ngx-charts-bar-vertical-2d *ngIf="chart.chartType === 'Bar' " class="chart-container" [view]="view" [legendTitle]="''" [scheme]="colorScheme"
+                                                    [results]="chart.multiple" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                                                    [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                                                    [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel">
+                                                </ngx-charts-bar-vertical-2d>
+
+
+                                                <!--
+
+
+
+                                                <ngx-charts-bar-horizontal *ngIf="chart.chartType === 'Bar' && chart.selectedChartType === 'Horizontal Bar Chart'" class="chart-container"
+                                                    [view]="view" [scheme]="colorScheme" [results]="single" [gradient]="gradient"
+                                                    [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                                                    [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel">
+                                                </ngx-charts-bar-horizontal>
+                                                <ngx-charts-bar-vertical-2d *ngIf="chart.chartType === 'Bar'  && chart.selectedChartType === 'Grouped Vertical Bar Chart'"
+                                                    class="chart-container" [view]="view" [scheme]="colorScheme" [results]="single"
+                                                    [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                                    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                                                    [yAxisLabel]="yAxisLabel">
+                                                </ngx-charts-bar-vertical-2d>
+                                                <ngx-charts-bar-horizontal-2d *ngIf="chart.chartType === 'Bar' && chart.selectedChartType ===  'Grouped Horizontal Bar Chart'"
+                                                    class="chart-container" [view]="view" [scheme]="colorScheme" [results]="single"
+                                                    [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                                    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                                                    [yAxisLabel]="yAxisLabel">
+                                                </ngx-charts-bar-horizontal-2d>
+                                                <ngx-charts-bar-vertical-stacked *ngIf="chart.chartType === 'Bar' && chart.selectedChartType === 'Stacked Vertical Bar Chart'"
+                                                    class="chart-container" [view]="view" [scheme]="colorScheme" [results]="single"
+                                                    [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                                    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                                                    [yAxisLabel]="yAxisLabel">
+                                                </ngx-charts-bar-vertical-stacked>
+                                                <ngx-charts-bar-horizontal-stacked *ngIf="chart.chartType === 'Bar'  && chart.selectedChartType === 'Stacked Horizontal Bar Chart' "
+                                                    class="chart-container" [view]="view" [scheme]="colorScheme" [results]="single"
+                                                    [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                                    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                                                    [yAxisLabel]="yAxisLabel">
+                                                </ngx-charts-bar-horizontal-stacked>
+                                                <ngx-charts-bar-vertical-normalized *ngIf="chart.chartType === 'Bar'  && chart.selectedChartType === 'Normalized Vertical Bar Chart'"
+                                                    class="chart-container" [view]="view" [scheme]="colorScheme" [results]="single"
+                                                    [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                                    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                                                    [yAxisLabel]="yAxisLabel">
+                                                </ngx-charts-bar-vertical-normalized>
+                                                <ngx-charts-bar-horizontal-normalized *ngIf="chart.chartType === 'Bar' && chart.selectedChartType === 'Normalized Horizontal Bar Chart'"
+                                                    class="chart-container" [view]="view" [scheme]="colorScheme" [results]="single"
+                                                    [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                                    [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                                                    [yAxisLabel]="yAxisLabel">
+                                                </ngx-charts-bar-horizontal-normalized>-->
+
+
+
+
+
+                                                <!--end bar chart-->
+
+                                                <!--<div class='container' [dragula]='"page-bag"' id="content" style="min-height: 300px; border: 1px solid #7896b1;"></div>
+                                                <div class="list-group" [dragula]='"page-bag"' id="layouts">
+                                                    <button type="button" class="list-group-item">Container</button>
+                                                    <button type="button" class="list-group-item">Row</button>
+                                                    <button type="button" class="list-group-item">Column</button>
+                                                    <button type="button" class="list-group-item">Header</button>
+                                                    <button type="button" class="list-group-item">Table</button>
+                                                </div>-->
+
+                                            </div>
+
+
+                                        </div>
+
+
+                                    </div>
+                                </div><br><br>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

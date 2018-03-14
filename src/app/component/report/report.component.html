@@ -1,0 +1,64 @@
+<div style="padding: 10px 14px;position: relative;">
+  <hy-navbar [totalDB]="totalDB" [moduleName]="moduleName" [faIcon]="faIcon"></hy-navbar>
+  <hy-tableheader [tableHeader]="moduleName" [addFunctionName]="addFunctionName" (addnewSource)="addnewSource($event)"></hy-tableheader>
+
+
+  <p-dataTable [value]="reports" [globalFilter]="gb" scrollable="true" scrollHeight="300px" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [responsive]="true">
+    <p-column field="ReportGroupName" header="Group Name" [filter]="true" [sortable]="true">
+      <ng-template let-report="rowData" pTemplate="body">
+        <div class="sourceName"> {{report.ReportGroupName}} </div>
+      </ng-template>
+
+    </p-column>
+    <p-column field="ChildReportGroupName" header="ChildGroup Name" [filter]="true" [sortable]="true">
+
+      <ng-template let-report="rowData" pTemplate="body">
+        <div class="sourceName"> {{report.ChildReportGroupName}} </div>
+      </ng-template>
+
+    </p-column>
+    <p-column field="ReportName" header="Report Name" [filter]="true" [sortable]="true">
+
+      <ng-template let-report="rowData" pTemplate="body">
+        <div class="sourceName"> {{report.ReportName}} </div>
+      </ng-template>
+
+    </p-column>
+    <p-column field="CategoryName" header="Category Name" [filter]="true" [sortable]="true">
+
+      <ng-template let-report="rowData" pTemplate="body">
+        <div class="sourceName"> {{report.CategoryName}} </div>
+      </ng-template>
+
+    </p-column>
+    <p-column field="SourceType" header="Source Type" [filter]="true" [sortable]="true">
+
+      <ng-template let-report="rowData" pTemplate="body">
+        <div class="sourceName"> {{report.SourceType}} </div>
+      </ng-template>
+
+    </p-column>
+
+    <p-column field="SourceName" header="Source Name" [filter]="true" [sortable]="true">
+      <ng-template let-report="rowData" pTemplate="body">
+        <div class="sourceName"> {{report.SourceName}} </div>
+      </ng-template>
+    </p-column>
+    <p-column field="DatabaseName" header="Database Name" [filter]="true" [sortable]="true">
+      <ng-template let-report="rowData" pTemplate="body">
+        <div class="sourceName"> {{report.DatabaseName}} </div>
+      </ng-template>
+    </p-column>
+    <p-column styleClass="col-button" [style]="{'width':'50px'}" header="E">
+      <ng-template let-report="rowData" pTemplate="body">
+        <i class="fa fa-fw fa-edit" (click)="editReport(report.ReportID)"></i>
+      </ng-template>
+    </p-column>
+    <p-column styleClass="col-button" [style]="{'width':'50px'}" header="D">
+      <ng-template let-report="rowData" pTemplate="body">
+        <i class="fa fa-fw fa-trash-o txt-color-red" (click)="delete(report)"></i>
+      </ng-template>
+    </p-column>
+  </p-dataTable>
+</div>

@@ -1,0 +1,22 @@
+<!--ui-tabview-->
+<div class="tab-view" >
+    <p-tabView #tabRef  [activeIndex]="activeIndex"  (onChange)="handleChange($event)" (onClose)="handleClose($event)" (onCreate)="addNewRecord($event)">
+        <p-tabPanel *ngFor="let tab of tabs;let i=index;" [showAddButton]="tab.data.showAddButton" [header]="tab.data.name" 
+         [selected]="tab.data.selected"  [closable]="true" (click)="tabPanelClick(i)">
+            <ui-tab-panel [tabItem]="tab" [saveLayOut]="saveLayOut" (gridOptionsData)="ongridOptionsData($event)"
+            [columnDefs]="columnDefs" 
+            [layoutData]="layoutData"
+            [gridData]="gridData"
+            ></ui-tab-panel>
+            <!-- <my-app [saveLayOut]="saveLayOut"
+            [columnDefs]="columnDefs" 
+            [layoutData]="layoutData"
+            [gridData]="gridData"></my-app> -->
+        </p-tabPanel>
+    </p-tabView>
+   
+    <div id="contextMenu">
+        <p-menu [model]="items"></p-menu>
+    </div>
+
+</div>

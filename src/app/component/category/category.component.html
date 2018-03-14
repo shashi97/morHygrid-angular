@@ -1,0 +1,83 @@
+<p-growl [(value)]="msgs" life="3000"></p-growl>
+<div style="padding: 10px 14px;position: relative;">
+  <hy-navbar [totalDB]="totalDB" [moduleName]="moduleName" [faIcon]="faIcon"></hy-navbar>
+  <!-- <hy-tableheader [tableHeader]="moduleName" [addFunctionName]="addFunctionName" (addnewSource)="addnewSource($event)"></hy-tableheader> -->
+  <div class="panel-group smart-accordion-default" id="Div1" style="margin-top: 10px;">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-lg-7 col-md-4 col-sm-4 col-xs-12 padLeft13 ">
+            <h1>
+              <i class="fa fw fa-table" style="margin-right:5px"></i>All Categories</h1>
+          </div>
+          <div class="col-lg-5 col-md-8 col-sm-8 col-xs-12">
+            <div class="row">
+              <div class="custom-padding-searchBox col-lg-8 col-md-8 col-sm-7 col-xs-11">
+                <div id="Div3" class="custom-dataTables_filter">
+                  <label>
+                    <span class="input-group-addon">
+                      <i class="glyphicon glyphicon-search"></i>
+                    </span>
+                    <input type="text" placeholder="Search" class="form-control ng-pristine ng-valid">
+                  </label>
+                </div>
+              </div>
+              <div class="custom-padding-6 col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                <a class="btn btn-primary" data-target="#AddCategoryDialog" data-toggle="modal">
+                  <i class="fa fa-plus"></i>
+                  Add New {{addFunctionName}}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="AddCategoryDialog" title="Add Category " class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Add Category</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group">
+              <label class="col-md-3 control-label">Category Name</label>
+              <div class="col-md-6">
+                <input type="text" [(ngModel)]="hfaCategoryDetail.CategoryName" class="form-control" id="Text1" name="popup" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger closeButton" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+            Cancel
+          </button>
+          <button type="button" id="SaveCategory" (click)="SaveCategory()" class="btn btn-success">
+            <i class="fa fa-save"></i>
+            Save
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <p-dataTable [value]="allCategories" [globalFilter]="gb">
+    <p-column field="CategoryName" header="Category Name">
+    </p-column>
+    <p-column styleClass="col-button" [style]="{'cursor':'pointer'}">
+      <ng-template let-category="rowData" pTemplate="body">
+        <i class="fa fa-fw fa-trash-o txt-color-red" (click)="deleteCategory(category)"></i>
+      </ng-template>
+    </p-column>
+  </p-dataTable>
+</div>

@@ -1,0 +1,58 @@
+<p-growl [(value)]="msgs" life="3000"></p-growl>
+<div style="padding: 10px 14px;position: relative;">
+  <hy-navbar [totalDB]="totalDB" [moduleName]="moduleName" [faIcon]="faIcon"></hy-navbar>
+  <div class="well">
+
+    <div class="row" style="margin-top: 5px; margin-left: 0px;padding-bottom:20px">
+      <article class="col-sm-4 col-md-10 col-lg-12">
+        <div class="collapse navbar-collapse custom-bordered-bottom ">
+          <ul class="nav navbar-nav navbar-left">
+            <li>
+              <div style="font-weight: bold; font-size: 15px; padding-top: 0px" class="ng-binding">
+                <i ng-class="IconClass" class="fa fa-fw fa-edit txt-color-blue"></i>Edit Reports User - {{userDetail.UserName}}</div>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+
+            <li class="active bg-color-red custom-color-white">
+              <a class="custom-color-white" (click)="cancel()">Cancel</a>
+            </li>
+            <li class="bg-color-blue custom-color-white">
+              <a class="custom-color-white" (click)="SaveReportForUser()">Save</a>
+            </li>
+          </ul>
+        </div>
+      </article>
+    </div>
+    <div style="border: 1px solid #cccccc;border-bottom:0px;" class="row">
+      <div class="col-lg-5 col-md-4 col-sm-4 col-xs-12 padLeft13">
+        <label class="col-lg-6 control-label ng-binding" style="margin-top: 10px;">
+          <b>User Name - </b>{{userDetail.UserName}}</label>
+      </div>
+      <div class="custom-padding-searchBox col-lg-6 col-md-6 col-sm-6 col-xs-8">
+        <div id="Div2" class="custom-dataTables_filter" style="margin-left:40px;">
+          <label>
+            <span class="input-group-addon">
+              <i class="glyphicon glyphicon-search"></i>
+            </span>
+            <input type="text" #gb class="form-control ng-pristine ng-valid"  placeholder="Search" aria-controls="dt_basic">
+          </label>
+        </div>
+      </div>
+
+    </div>
+    <p-dataTable [value]="getReportByUserID"  scrollable="true" scrollHeight="200px" [rows]="10" [paginator]="true" [pageLinks]="3" [responsive]="true" [globalFilter]="gb">
+      <p-column field="ReportGroupName" header="Group Name" [filter]="true" [sortable]="true"></p-column>
+      <p-column field="ChildReportGroupName" header="ChildGroup Name" [filter]="true" [sortable]="true"></p-column>
+      <p-column field="ReportName" header="Report Name" [filter]="true" [sortable]="true"></p-column>
+      <p-column field="CategoryName" header="Category Name" [filter]="true" [sortable]="true"></p-column>
+      
+      <p-column styleClass="col-button" header="Access"  [filter]="true" [sortable]="true" [style]="{'width':'180px'}">
+        <ng-template let-user="rowData" pTemplate="body">
+          <input type="checkbox" [(ngModel)]="user.IsChecked">
+        </ng-template>
+      </p-column>
+    </p-dataTable>
+
+  </div>
+</div>

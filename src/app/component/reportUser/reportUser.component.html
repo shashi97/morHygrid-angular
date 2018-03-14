@@ -1,0 +1,37 @@
+<div style="padding: 10px 14px;position: relative;">
+  <hy-navbar [totalDB]="totalDB" [moduleName]="moduleName" [faIcon]="faIcon"></hy-navbar>
+  <div class="panel-group smart-accordion-default" id="Div1" style="margin-top: 10px;">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-lg-9 col-md-4 col-sm-4 col-xs-12 padLeft13 ">
+            <h1>
+              <i class="fa fw fa-table" style="margin-right:5px"></i>All Report Users</h1>
+          </div>
+          <div class="col-lg-3 col-md-8 col-sm-8 col-xs-12">
+            <div class="row">
+              <div class="custom-padding-searchBox col-lg-12 col-md-12 col-sm-11 col-xs-11">
+                <div id="Div3" class="custom-dataTables_filter">
+                  <label>
+                    <span class="input-group-addon">
+                      <i class="glyphicon glyphicon-search"></i>
+                    </span>
+                    <input type="text" placeholder="Search" class="form-control ng-pristine ng-valid">
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-dataTable [value]="serviceUserDetails" [globalFilter]="gb">
+    <p-column field="UserName" header="Source Name"></p-column>
+    <p-column styleClass="col-button" [style]="{'width':'180px','cursor':'pointer'}">
+      <ng-template let-user="rowData" pTemplate="body">
+        <i class="fa fa-fw fa-edit" (click)="editReportUser(user.UserID)"></i>
+      </ng-template>
+    </p-column>
+  </p-dataTable>
+</div>

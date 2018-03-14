@@ -1,0 +1,19 @@
+<aside id='left-panel'>
+
+  <!-- User info -->
+  <sa-login-info></sa-login-info>
+  <!-- end user info -->
+
+  <nav>
+    <ul saSmartMenu>
+      <li *ngFor='let panel of leftPanelMenu'  style='cursor:pointer'>
+        <a (click)='onClickLeftMenuPanel(panel)' *ngIf="panel.isShow" title='User'><i class='{{panel.iconClass}}'></i><span class='menu-item-parent'>{{panel.title}}</span></a>
+      </li>
+
+    </ul>
+
+  </nav>
+
+  <sa-minify-menu></sa-minify-menu>
+
+</aside>

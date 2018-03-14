@@ -1,0 +1,55 @@
+.custom-padding-searchBox {
+  padding: 6px 5px 3px 0px;
+}
+
+.custom-dataTables_filter {
+  float: left;
+  width: 100%;
+}
+
+div.custom-dataTables_filter label {
+  font-weight: normal;
+  float: right;
+}
+
+.custom-dataTables_filter .input-group-addon {
+  width: 32px;
+  margin-top: 0px;
+  float: left;
+  height: 32px;
+  padding-top: 8px;
+}
+
+div.custom-dataTables_filter input {
+  width: 80%;
+}
+
+.custom-padding-6 {
+  padding: 6px;
+}
+
+.padLeft13 {
+  padding-left: 13px;
+}
+
+.custom-color-white {
+  color: white;
+  cursor: pointer;
+}
+
+.row {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.hfaDatabase{
+
+  margin: 5px 0;
+  padding: 1%;
+  width: 133px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 17px;
+  
+ }

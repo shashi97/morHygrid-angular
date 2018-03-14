@@ -1,0 +1,11 @@
+   .sourceName{
+
+    margin: 5px 0;
+    padding: 1%;
+    width: 133px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 17px;
+    
+   }

@@ -1,0 +1,121 @@
+<header id="header">
+  <div id="logo-group">
+
+    <!-- PLACE YOUR LOGO HERE -->
+    <span id="logo">
+      <img src="assets/img/logo.png" alt="SmartAdmin"> </span>
+    <!-- END LOGO PLACEHOLDER -->
+
+    <!-- Note: The activity badge color changes when clicked and resets the number to 0
+    Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
+
+  </div>
+
+  <div *ngIf="roleId !== 1">
+    <div class="project-context hidden-xs">
+      <span class="label custom-margin-top-10 custom-left" >Client:</span>
+      <span class="project-selector dropdown-toggle custom-left custom-width155 custom-padding-top-7" (click)="showCompanyList= true"
+        id="cmpName">
+        <span ng-cloak>{{selectedCompany.companyName}}</span>
+      </span>
+    </div>
+  </div>
+
+  <div *ngIf="roleId === 1">
+      <div class="project-context hidden-xs">
+        <span class="label custom-margin-top-10 custom-left" (click)="showCompanyList = false">Client:</span>
+        <span class="project-selector dropdown-toggle custom-left custom-width155 custom-padding-top-7" (click)="showCompanyList= true"
+          *ngIf="!showCompanyList" id="cmpName">
+          <span ng-cloak>{{selectedCompany.CompanyName}}</span>
+          <i *ngIf="TotalCompany>1" class="fa fa-angle-down" id="angleDownCompany"></i>
+        </span>
+      </div>
+      <select *ngIf="showCompanyList" class="form-control custom-Header-DD" ng-cloak ui-select2 id="cmbCompany" [(ngModel)]="selectedCompany.CompanyID"
+        (change)="onCompanyChange(selectedCompany.CompanyID)" [disabled]="isDisable">
+        <option *ngFor="let cmp of companyList" value="{{cmp.CompanyID}}">{{cmp.CompanyName}}</option>
+      </select>
+      <span id="totalCmp" hidden>{{TotalCompany}}</span>
+    </div>
+
+  <!-- pulled right: nav area -->
+  <div class="pull-right">
+
+    <sa-collapse-menu></sa-collapse-menu>
+
+    <!-- #MOBILE -->
+    <!-- Top menu profile link : this shows only when top menu is active -->
+    <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+      <li class="">
+        <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+          <img src="assets/img/avatars/sunny.png" alt="John Doe" class="online" />
+        </a>
+        <ul class="dropdown-menu pull-right">
+          <li>
+            <a (click)="(null)" class="padding-10 padding-top-0 padding-bottom-0">
+              <i class="fa fa-cog"></i> Setting</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a routerLink="/app-views/profile" class="padding-10 padding-top-0 padding-bottom-0">
+              <i class="fa fa-user"></i>
+              <u>P</u>rofile</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a (click)="(null)" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut">
+              <i class="fa fa-arrow-down"></i>
+              <u>S</u>hortcut</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a (click)="(null)" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen">
+              <i class="fa fa-arrows-alt"></i> Full
+              <u>S</u>creen</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a routerLink="/auth/login" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout">
+              <i class="fa fa-sign-out fa-lg"></i>
+              <strong>
+                <u>L</u>ogout</strong>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- logout button -->
+    <sa-logout></sa-logout>
+    <!-- end logout button -->
+
+    <!-- search mobile button (this is hidden till mobile view port) -->
+    <div id="search-mobile" class="btn-header transparent pull-right">
+      <span>
+        <a (click)="toggleSearchMobile()" title="Search">
+          <i class="fa fa-search"></i>
+        </a>
+      </span>
+    </div>
+    <!-- end search mobile button -->
+
+    <!-- input: search field -->
+
+    <!-- end input: search field -->
+
+    <!-- fullscreen button -->
+    <sa-full-screen></sa-full-screen>
+    <!-- end fullscreen button -->
+
+    <!-- #Voice Command: Start Speech -->
+
+    <!-- end voice command -->
+
+
+    <!-- end multiple lang -->
+
+
+
+  </div>
+  <!-- end pulled right: nav area -->
+
+</header>

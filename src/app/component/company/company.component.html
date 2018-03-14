@@ -1,0 +1,23 @@
+<p-growl [(value)]="message" life="3000"></p-growl>
+<div style="padding: 10px 14px;position: relative;">
+    <hy-navbar [totalDB]="totalDB" [moduleName]="moduleName" [faIcon]="faIcon"></hy-navbar>
+    <hy-tableheader [tableHeader]="moduleName" [addFunctionName]="addFunctionName" (addnewSource)="addNewCompany($event)"></hy-tableheader>
+  
+    <p-dataTable [value]="companies" [globalFilter]="gb">
+      <p-column field="companyName" header="Company Name" [filter]="true" [sortable]="true"></p-column>
+      <p-column field="description" header="Description" [filter]="true" [sortable]="true"></p-column>
+      <p-column field="serviceUrl" header="Service Url" [filter]="true" [sortable]="true"></p-column>
+      <p-column field="active" header="Active" [filter]="true" [sortable]="true"></p-column>
+     
+      <p-column styleClass="col-button" [style]="{'width':'50px'}" header="">
+        <ng-template let-companydata="rowData" pTemplate="body">
+          <i class="fa fa-fw fa-edit" (click)="editCompany(companydata.companyID)"></i>
+        </ng-template>
+      </p-column>
+      <p-column styleClass="col-button" [style]="{'width':'50px'}" header="">
+        <ng-template  let-company="rowData"  pTemplate="body">
+          <i class="fa fa-fw fa-trash-o txt-color-red" (click)="showPopup(company.companyID)"></i>
+        </ng-template>
+      </p-column>
+    </p-dataTable>
+  </div>

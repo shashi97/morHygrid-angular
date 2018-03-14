@@ -1,0 +1,202 @@
+<p-growl [(value)]="message" [immutable]= "false" life="3000"></p-growl>
+
+<div [ngClass]="{'tree-table-dynamic-width':!isFullScreen,'tree-table-dynamic-width-after-div-full-screen':isFullScreen}">
+  <div *ngFor="let report of reportViewData">
+    <div (click)="fileShownEvent(report)" style="cursor:pointer">
+      <div *ngIf="!report.IsReportChild" style="float:left;width:20px">
+        <i class="fa fa-caret-right" style="font-size: 15px;color: #756c6c;margin-top:2px" aria-hidden="true"></i>
+      </div>
+      <div *ngIf="report.IsReportChild" style="float:left;width:20px">
+        <i class="fa fa-caret-down" style="font-size: 15px;color: #756c6c;margin-top:2px" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="report-layout-child-text-main" (click)="fileShownEvent(report)">
+      {{report.GroupOrReportName}}</div>
+    <div *ngIf="report.IsReportChild">
+      <div *ngFor="let reportChild of report.Children" >
+
+
+
+        <div    *ngIf="reportChild.Children == null" [ngClass]="{'tree-table-selected-report':reportChild.ReportObject.IsReportChild}">
+          <div class="report-layout-child-text-main" style="padding:10px 0px 10px 42px;cursor:pointer" (click)="childReportParameterFileShownEvent(reportChild.ReportObject,report)">
+            <i [ngClass]="{'tree-table-icon-selected':reportChild.ReportObject.IsReportChild}"  class="fa fa-file-text tree-table-icon" aria-hidden="true"></i> {{reportChild.ReportObject.ReportName}}</div>
+          <div *ngIf="reportChild.ReportObject.IsReportChild == true">
+            <!-- <div *ngIf="reportChild.ReportObject.ReportParameters.length == 0">
+             <button>Run</button>
+            </div> -->
+
+            <div *ngFor="let reportChildReportParameter of reportChild.ReportObject.ReportParameters">
+              <div *ngIf="reportChildReportParameter.DataType == 'date'" style="margin-top: -3%;">
+                <div class="ui-g">
+                  <div class="ui-g-6 report-layout-child-text">
+                    {{reportChildReportParameter.DisplayName}}
+                  </div>
+                  <div class="ui-g-6">
+                    <p-calendar [inputStyle]="{'width':'78%'}" [(ngModel)]="reportChildReportParameter.ParameterValue" dateFormat="mm-dd-yy"
+                      [showIcon]="true"></p-calendar>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ui-g" style="margin-top: -3%;" *ngIf="reportChildReportParameter.DataType == 'list' && reportChildReportParameter.IsDynamicSource == false">
+                
+                  <div class="ui-g-6 report-layout-child-text">
+                    {{reportChildReportParameter.DisplayName}}
+                  </div>
+                  <div class="ui-g-6">
+                    <p-dropdown filter="true" [style]="{'width':'100%'}" [options]="reportChildReportParameter.listParameterDDO" [(ngModel)]="reportChildReportParameter.selectedListParameterValue"></p-dropdown>
+                  </div>
+               
+
+              </div>
+
+              <div class="ui-g" style="margin-top: -3%;" *ngIf="reportChildReportParameter.DataType == 'list' && reportChildReportParameter.IsDynamicSource == true">
+                  <div class="ui-g-6 report-layout-child-text">{{reportChildReportParameter.DisplayName}} </div>
+                  <div class="ui-g-6">
+                  <p-dropdown filter="true" [style]="{'width':'100%'}" *ngIf="!reportChildReportParameter.dynamicDataLoaderGif" [options]="reportChildReportParameter.DefaultValueParams"
+                    [(ngModel)]="reportChildReportParameter.DefaultValue"></p-dropdown>
+                  <img *ngIf="reportChildReportParameter.dynamicDataLoaderGif" style="width: 20%;" src="../assets/img/serviceLoader.gif">
+                </div>
+              </div>
+
+              <div class="ui-g" style="margin-top: -3%;" *ngIf="reportChildReportParameter.DataType == 'number'">
+                  <div class="ui-g-6 report-layout-child-text"> {{reportChildReportParameter.DisplayName}} </div>
+                  <div class="ui-g-6">
+                  <input style="width: 100%;" type="text" [(ngModel)]="reportChildReportParameter.ParameterValue">
+                </div>
+              </div>
+              <div  class="ui-g" style="margin-top: -3%;" *ngIf="reportChildReportParameter.DataType == 'string'">
+                  <div class="ui-g-6 report-layout-child-text">{{reportChildReportParameter.DisplayName}}</div>
+                  <div class="ui-g-6">
+                  <input style="width: 100%;" type="text" [(ngModel)]="reportChildReportParameter.ParameterValue">
+                </div>
+              </div>
+
+              <div class="ui-g" style="margin-top: -3%;" *ngIf="reportChildReportParameter.DataType == 'boolean'">
+                  <div class="ui-g-6 report-layout-child-text">{{reportChildReportParameter.DisplayName}}</div>
+                  <div class="ui-g-6">
+                  <p-checkbox binary="true" [(ngModel)]="reportChildReportParameter.DefaultValue"></p-checkbox>
+                </div>
+              </div>
+           
+            </div>
+            <div style="margin-top: 3%; margin-left: 16%;font-size: 12px;">
+              Where do you want to put the report?</div>
+            <div class="ui-g" style="margin-top: 3%;margin-left: 16%;font-size:12px">
+              <p-radioButton value="0" label="A New Layout" (onClick)="onLayOutSelect('0')" [(ngModel)]="reportChild.ReportObject.layOutRadioSelection"></p-radioButton>
+            </div>
+            <div class="ui-g" style="margin-left: 16%;font-size:12px">
+              <p-radioButton value="1" label="An Existing Layout" [(ngModel)]="reportChild.ReportObject.layOutRadioSelection"></p-radioButton>
+            </div>
+            <div class="ui-g-8" *ngIf="reportChild.ReportObject.layOutRadioSelection == 1" style="margin-left: 16%;">
+              <p-dropdown filter="true" [style]="{'width':'125%'}" appendTo="body" [options]="reportChild.ReportObject.ReportLayoutDDO" (onChange)="onLayOutSelect($event.value)"
+                [(ngModel)]="reportChild.ReportObject.selectedReportLayout"></p-dropdown>
+            </div>
+            <button (click)="getReportDataFromService(reportChild.ReportObject)" style="border: 1px solid #5cb85c;margin-bottom: 2%;background-color: #5cb85c;
+            width: 96%;color: white;margin-top: 5%;margin-left: 2%">Run</button>
+          </div>
+        </div>
+
+
+        <div *ngIf="reportChild.Children != null" style="padding: 9px 0px 0px 22px;">
+          <div *ngFor="let reportChildrenParameter of reportChild.Children" (click)="childFileShownEvent(reportChildrenParameter,report)">
+            <div style="cursor:pointer">
+              <div *ngIf="!reportChildrenParameter.IsReportChild" style="float:left;width:20px">
+                <i class="fa fa-caret-right" style="font-size: 15px;color: #756c6c;margin-top:2px" aria-hidden="true"></i>
+              </div>
+              <div *ngIf="reportChildrenParameter.IsReportChild" style="float:left;width:20px">
+                <i class="fa fa-caret-down" style="font-size: 15px;color: #756c6c;margin-top:2px" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div  class="report-layout-child-text-main" >
+              <i  class="fa fa-file-text tree-table-icon" aria-hidden="true"></i> {{reportChild.GroupOrReportName}}</div>
+          </div>
+        </div>
+        <div *ngIf="reportChild.Children != null">
+          <div *ngFor="let reportChildParameters of reportChild.Children">
+
+
+            <div *ngIf="reportChildParameters.IsReportChild == true" [ngClass]="{'tree-table-selected-report':reportChildParameters.ReportObject.IsReportChild}">
+              <!-- <div *ngIf="reportChild.ReportObject.ReportParameters.length == 0">
+                   <button>Run</button>
+                  </div> -->
+              <div class="report-layout-child-text-main" style="cursor:pointer;padding:10px 0px 10px 57px" (click)="childReportParameterFileShownEvent(reportChildParameters.ReportObject,report)">
+                <i [ngClass]="{'tree-table-icon-selected':reportChildParameters.ReportObject.IsReportChild}" class="fa fa-file-text tree-table-icon" aria-hidden="true"></i> {{reportChildParameters.ReportObject.ReportName}}</div>
+              <div *ngIf="reportChildParameters.ReportObject.IsReportChild == true" >
+                <div *ngFor="let reportChildReportParameter of reportChildParameters.ReportObject.ReportParameters">
+                  <div style="margin-top: -3%;" *ngIf="reportChildReportParameter.DataType == 'date'">
+                      <div class="ui-g">
+                          <div class="ui-g-6 report-layout-child-text">{{reportChildReportParameter.DisplayName}} </div>
+                          <div class="ui-g-6">
+                      <p-calendar [(ngModel)]="reportChildReportParameter.ParameterValue" dateFormat="mm-dd-yy" [showIcon]="true"></p-calendar>
+                    </div>
+                  </div>
+                </div>
+                
+
+                  <div style="margin-top: -3%;" class="ui-g" *ngIf="reportChildReportParameter.DataType == 'list' && reportChildReportParameter.IsDynamicSource == false">
+                      <div class="ui-g-6 report-layout-child-text">{{reportChildReportParameter.DisplayName}}  </div>
+                       <div class="ui-g-6">
+                      <p-dropdown filter="true" [options]="reportChildReportParameter.listParameterDDO" [(ngModel)]="reportChildReportParameter.selectedListParameterValue"></p-dropdown>
+                    </div>
+                  </div>
+                 
+                
+
+                  <div style="margin-top: -3%;"  class="ui-g"  *ngIf="reportChildReportParameter.DataType == 'list' && reportChildReportParameter.IsDynamicSource == true">
+                      <div class="ui-g-6 report-layout-child-text">{{reportChildReportParameter.DisplayName}} </div>
+                      <div class="ui-g-6">
+                      <p-dropdown filter="true" [style]="{'width':'100%'}"  *ngIf="!reportChildReportParameter.dynamicDataLoaderGif" [options]="reportChildReportParameter.DefaultValueParams"
+                        [(ngModel)]="reportChildReportParameter.DefaultValue"></p-dropdown>
+                      <img *ngIf="reportChildReportParameter.dynamicDataLoaderGif" style="width: 20%;" src="../assets/img/serviceLoader.gif">
+                    </div>
+                 
+                  </div>
+
+                  <div style="margin-top: -3%;" class="ui-g" *ngIf="reportChildReportParameter.DataType == 'number'">
+                      <div class="ui-g-6 report-layout-child-text">{{reportChildReportParameter.DisplayName}}</div>
+                      <div class="ui-g-6">
+                      <input style="width: 100%;" type="text" [(ngModel)]="reportChildReportParameter.ParameterValue">
+                    </div>
+                    </div>
+                  
+                  <div style="margin-top: -3%;" class="ui-g" *ngIf="reportChildReportParameter.DataType == 'string'">
+                      <div class="ui-g-6 report-layout-child-text">{{reportChildReportParameter.DisplayName}}</div>
+                      <div class="ui-g-6">
+                      <input style="width: 100%;" type="text" [(ngModel)]="reportChildReportParameter.ParameterValue">
+                    </div>                   
+                  </div>
+
+                  <div style="margin-top: -3%;" class="ui-g" *ngIf="reportChildReportParameter.DataType == 'boolean'">
+                      <div class="ui-g-6 report-layout-child-text">{{reportChildReportParameter.DisplayName}}</div>
+                      <div class="ui-g-6">
+                      <p-checkbox binary="true" [(ngModel)]="reportChildReportParameter.DefaultValue"></p-checkbox>
+                    </div>
+                  </div>
+
+                </div>
+                <div  style="margin-top: 3%;margin-left: 16%;font-size: 12px;">
+                    Where do you want to put the report?</div>
+                <div class="ui-g" style="margin-top: 3%;margin-left: 16%;font-size:12px">
+                  <p-radioButton value="0" label="A New Layout" (onClick)="onLayOutSelect('0')" [(ngModel)]="reportChildParameters.ReportObject.layOutRadioSelection"></p-radioButton>
+                </div>
+                <div class="ui-g" style="margin-left: 16%;font-size:12px">
+                  <p-radioButton value="1" label="An Existing Layout" [(ngModel)]="reportChildParameters.ReportObject.layOutRadioSelection"></p-radioButton>
+                </div>
+                <div class="ui-g-8" *ngIf="reportChildParameters.ReportObject.layOutRadioSelection == 1" style="margin-left: 16%;">
+                  <p-dropdown filter="true" [style]="{'width':'125%'}" appendTo="body" [options]="reportChildParameters.ReportObject.ReportLayoutDDO" (onChange)="onLayOutSelect($event.value)"
+                    [(ngModel)]="reportChildParameters.ReportObject.selectedReportLayout"></p-dropdown>
+                </div>
+                <button (click)="getReportDataFromService(reportChildParameters.ReportObject)"
+                style="border: 1px solid #5cb85c;margin-bottom: 2%;background-color: #5cb85c;
+            width: 96%;color: white;margin-top: 5%;margin-left: 2%">Run</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

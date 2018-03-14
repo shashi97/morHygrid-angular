@@ -1,0 +1,344 @@
+.vertical-menu {}
+
+.vertical-tab-menu {
+  width: 100%;
+  overflow-y: auto;
+  white-space: nowrap;
+}
+
+.cssCircle {
+  border-radius: 1039px;
+  width: 30px;
+  height: 28px;
+  padding: 0px;
+  background: #efefef;
+  border: 1px solid #404040;
+  color: #404040;
+  text-align: center;
+  transition: background 0.2s linear;
+  transition: color 0.2s linear;
+  font: 24px Arial, sans-serif;
+  margin-left: 1%;
+}
+
+.cssCircle:hover {
+  background: #3F69A0;
+  cursor: pointer;
+}
+
+.minusSign {
+  line-height: 0.9em;
+  margin-bottom: 1px;
+}
+
+.plusSign {
+  line-height: 1.1em;
+}
+
+.minusSign:hover,
+.plusSign:hover {
+  color: white;
+}
+
+.minifiem-report {
+  border-bottom: 1px solid #302F2F;
+  background: #454545;
+  color: #A8A8A8;
+  text-align: center;
+  padding: 0;
+  width: 31px;
+  height: 39px;
+  display: block;
+  position: absolute;
+  right: 0;
+  border-radius: 5px 0 0 5px;
+  cursor: pointer;
+  margin-top: 7px;
+  font-size: 19px;
+  transition: all .1s linear 0s;
+  padding-top: 0.5%;
+}
+
+.fullScreenimage {
+  height: 20px;
+}
+
+.report-expolorer-right:hover img {
+  -webkit-transform: scale(1.25);
+  /* Safari and Chrome */
+  -moz-transform: scale(1.25);
+  /* Firefox */
+  -ms-transform: scale(1.25);
+  /* IE 9 */
+  -o-transform: scale(1.25);
+  /* Opera */
+  transform: scale(1.25);
+}
+
+.spanImgTag:hover img {
+  -webkit-transform: scale(1.25);
+  /* Safari and Chrome */
+  -moz-transform: scale(1.25);
+  /* Firefox */
+  -ms-transform: scale(1.25);
+  /* IE 9 */
+  -o-transform: scale(1.25);
+  /* Opera */
+  transform: scale(1.25);
+}
+
+.report-expolorer-right {
+  margin-left: 1.5%;
+}
+
+.active-chart {
+  filter: opacity(0.5) drop-shadow(0 0 0 #15cbe8);
+}
+
+.deactive-chart {
+  /*filter: opacity(0.5) drop-shadow(0 0 0 white);*/
+}
+
+.active-table {
+  filter: opacity(0.5) drop-shadow(0 0 0 #15cbe8);
+}
+
+.deactive-table {
+  /*filter: opacity(0.5) drop-shadow(0 0 0 white);*/
+}
+
+.custom-width {
+  width: 40px !important;
+  margin-right: 0px;
+  padding: 1px;
+  margin-left: 4px;
+}
+
+.border-color {
+  border: 1px solid #BBDDF8
+}
+
+.line-height {
+  line-height: 30px !important;
+}
+
+.height-40 {
+  height: 40px;
+}
+
+.border-radious-6 {
+  border-radius: 6px;
+}
+
+.graph-body {
+  border: 3px solid #BBDDF8;
+  top: 5px;
+  float: left;
+  width: 100%;
+  position: relative;
+  font-size: 13px;
+  -moz-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  margin: 0;
+  border-width: 1px 1px 2px;
+  border-style: solid;
+  border-right-color: #BBDDF8 !important;
+  border-bottom-color: #BBDDF8!important;
+  border-left-color: #BBDDF8!important;
+  padding: 13px 13px 0;
+  overflow: visible;
+}
+
+.set-height {
+  max-height: calc(100vh - 250px);
+  overflow: auto;
+}
+
+.set-height-with-full-screen-chart {
+  max-height: calc(100vh - 210px);
+  overflow: auto;
+}
+
+.set-height-with-full-screen {
+  max-height: 100vh;
+  height: calc(100vh - 180px);
+}
+
+.height {
+  max-height: calc(100vh - 220px);
+}
+
+.container {
+  display: table-cell;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 50%;
+}
+
+.container:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+/*
+ * note that styling gu-mirror directly is a bad practice because it's too generic.
+ * you're better off giving the draggable elements a unique class and styling that directly!
+ */
+
+.container div,
+.gu-mirror {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: opacity 0.4s ease-in-out;
+}
+
+.container div {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+.gu-mirror {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+.container .ex-moved {
+  background-color: #e74c3c;
+}
+
+.container.ex-over {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.handle {
+  padding: 0 5px;
+  margin-right: 5px;
+  background-color: rgba(0, 0, 0, 0.4);
+  cursor: move;
+}
+
+nested-repeat-example .container span {
+  display: block;
+  padding: 8px;
+}
+
+
+/* default dragula styles */
+
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+}
+
+.gu-hide {
+  display: none !important;
+}
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+
+.deck {
+  margin: 1em;
+  display: flex;
+}
+
+.card {
+  background: #96FFE2;
+  height: 100px;
+  width: 100px;
+  margin: 1em;
+  flex: 0 0 100px;
+}
+
+.draggula-container {
+  margin-left: 3px;
+  background-color: #CCCCCC;
+  margin-right: 3px;
+}
+
+.add-chart {
+  padding-right: 4px;
+  display: block;
+  height: 32px;
+  position: relative;
+  float: right;
+  font-size: 111%;
+  line-height: 32px;
+  text-align: center;
+}
+
+.set-content-max-length {
+  max-height: 449%;
+  overflow-x: auto !important;
+}
+
+.float-right {
+  float: right;
+}
+
+.margin-bottom-14 {
+  margin-bottom: 14px;
+}
+
+.padding-0 {
+  padding: 0px;
+}
+
+.set-color {
+  border: 1px solid #EFF0F0;
+  border-radius: 6px;
+  background-color: #ededed73
+}
+
+.set-close-button-color {
+  filter: opacity(0.5) drop-shadow(0 0 0 #EDEDED);
+}
+
+.set-close-button-color:hover {
+  filter: opacity(0.5) drop-shadow(0 0 0 black);
+}
+
+.selectected-setting-button {
+  filter: opacity(0.5) drop-shadow(0 0 0 #EDEDED);
+}
+
+.selectected-setting-button:hover {
+  filter: opacity(0.5) drop-shadow(0 0 0 black);
+}
+
+.setting-button-click {
+  filter: opacity(0.5) drop-shadow(0 0 0 black);
+}
+
+.dispaly-none {
+  display: none;
+}
+
+.row-border {
+  color: #333;
+  /*border: 1px solid #C2C2C2;
+  background: #fafafa;*/
+}
+.label-padding{
+      padding-top: 10px;
+    font-size: 14px;
+}

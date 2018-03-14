@@ -1,0 +1,133 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="txt-color-blueDark"><i class="fa fa-history fa-fw"></i>Install Add-Ins</h1>
+    </div>
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+        <ul id="sparks">
+            <li class="sparks-info">
+                <h5>Total Install Add-Ins
+                    <span class="txt-color-blue">&nbsp;{{totalAccessLogs}}</span>
+                </h5>
+
+            </li>
+            <li class="sparks-info">
+                <h5>&nbsp;<span class="txt-color-blue">&nbsp;</span></h5>
+            </li>
+        </ul>
+    </div>
+</div>
+<section id="Section1" class="tabs-top">
+    <div class="row">
+        <p-panel [toggleable]="true">
+            <p-header>
+
+                <div class="col-md-9 col-sm-9">
+                    <h4 class="panel-title">
+                        <a class="col-md-12">
+                                
+                               Advance Search</a>
+                    </h4>
+                </div>
+
+                <div id="Div2" class="custom-dataTables_filter">
+                    <label>
+                             <span class="input-group-addon">
+                               <i class="glyphicon glyphicon-search"></i></span>
+                                              <input type="search" #gb  class="form-control" aria-controls="dt_basic">
+                             </label>
+                </div>
+
+            </p-header>
+            <div class="panel-group smart-accordion-default" id="Div1">
+                <!-- <div class="panel panel-default"> -->
+                <div id="collapseTwo-1" class="panel-collapse ">
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <article class="col-sm-12 col-md-12 col-lg-1">
+                                <!--blank col to put a space before starting form -->
+                            </article>
+                            <!-- NEW COL START -->
+                            <article class="col-sm-12 col-md-12 col-lg-5">
+
+                                <div class="form-horizontal">
+
+                                    <div class="form-group">
+                                        <label for="DateFrom" class="col-md-4 control-label"> From Date</label>
+                                        <div class="col-md-8">
+                                            <p-calendar [(ngModel)]="installAddInModel.FromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"></p-calendar> {{date6|date}}
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="DateTo" class="col-md-4 control-label"> To Date</label>
+                                        <div class="col-md-8">
+                                            <p-calendar [(ngModel)]="installAddInModel.ToDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"></p-calendar> {{date6|date}}
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </article>
+
+                            <!-- NEW COL START -->
+                            <article class="col-sm-12 col-md-12 col-lg-5">
+
+                                <div class="form-horizontal">
+
+                                    <!-- <div class="form-group">
+                                        <label for="LeaveType" class="col-md-4 control-label">Company</label>
+                                        <div class="col-md-8">
+                                            <p-dropdown [options]="companies" [(ngModel)]="installAddInModel.CompanyID" [style]="{'width':'150px'}" filter="true">
+
+                                            </p-dropdown>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="form-group">
+                                        <label for="Status" class="col-md-4 control-label">User</label>
+
+                                        <div class="col-md-8">
+                                            <p-dropdown [options]="users" [(ngModel)]="installAddInModel.UserName" [style]="{'width':'150px'}" filter="true">
+
+                                            </p-dropdown>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-8 control-label"></label>
+                                        <button class="btn btn-sm btn-primary col-md-2" (click)="getInstallAddInDetails()" type="button">
+                                                <i class="fa fa-search"></i>
+                                                Search
+                                            </button>
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- </div> -->
+            </div>
+
+        </p-panel>
+
+        <p-dataTable [value]="installs" selectionMode="single" [globalFilter]="gb" [rows]="10" [paginator]="true" [pageLinks]="3"
+            [responsive]="true" [stacked]="stacked">
+            <p-column field="clientMachineName" header="Machine Name" [sortable]="true"></p-column>
+            <p-column field="clientMacAddress" header="Mac Address" [sortable]="true"></p-column>
+            <p-column field="userName" header="User Name" [sortable]="true"></p-column>
+            <p-column field="ipAddress" header="IP Address" [sortable]="true"></p-column>
+            <p-column field="installedVersion" header="Installed Version" [sortable]="true"></p-column>
+            <p-column field="latestVersion" header="Latest Version" [sortable]="true"></p-column>
+            <p-column field="installationDate" header="Installation Date" [sortable]="true"></p-column>
+
+
+        </p-dataTable>
+
+    </div>
+</section>
